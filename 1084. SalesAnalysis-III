@@ -1,0 +1,16 @@
+select product_id, product_name from 
+product where product_id not in (
+select product_id from sales s where 
+sale_date > cast("2019-03-31" as date) or sale_date < cast("2019-01-01" as date) );
+
+
+
+------------------------------------
+
+SELECT product_id, product_name 
+FROM Product 
+WHERE product_id IN
+(SELECT product_id
+FROM Sales
+GROUP BY product_id
+HAVING MIN(sale_date) >= '2019-01-01' AND MAX(sale_date) <= '2019-03-31')
