@@ -20,3 +20,15 @@ FROM
 ROW_NUMBER() OVER (PARTITION BY player_id ORDER BY event_date) AS r
 FROM Activity) lookup
 WHERE r = 1;
+
+
+/********* my Solution *********/
+with player_activity as 
+(select player_id, 
+       device_id,
+       rank() over(partition by player_id order by event_date) rn
+from activity)
+
+select player_id, device_id 
+from player_activity 
+where rn = 1;
