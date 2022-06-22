@@ -14,3 +14,17 @@ where numofemploys in (
 select max(numofemploys) 
 from 
 projectcte)
+
+
+/***********/
+
+select t.project_id from (select 
+t.project_id,
+rank() over(order by t.cnt desc) as res 
+from (select 
+p.project_id,
+count(*) as cnt
+from Project as p inner join Employee as e
+	on e.employee_id = p.employee_id
+group by 1) as t) as t
+where t.res = 1
